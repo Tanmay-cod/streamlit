@@ -1,3 +1,7 @@
 streamlit
 langchain_community
 langchain-ollama
+matplotlib
+faiss-cpu
+sentence-transformers
+langchain_huggingface 
