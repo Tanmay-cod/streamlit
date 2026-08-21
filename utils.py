@@ -1,0 +1,32 @@
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+from langchain_community.vectorstores import FAISS
+from langchain_huggingface import HuggingFaceEmbeddings
+from langchain_core.documents import Document
+from pypdf import PdfReader
+
+#resume analyzer using RAG (Retrieval-Augmented Generation) approachand LLM (Large Language Model) for extracting and analyzing information from PDF files.
+#(RAG 1'st step) retreve the file data and extract the text from the pdf file
+def extract_pdf(file):
+    reader = PdfReader(file)
+    text = ""#string type 
+    for page in reader.pages :
+        text += page.extract_text()
+        return text
+
+# Document splitting
+
+def split_text(text):
+    splitter = RecursiveCharacterTextSplitter(chunk_size=300, chunk_overlap=50)
+    return splitter.split_text(text)
+
+# embading means converting the text data to vector representation
+def create_vector_text(texts):
+    chunks = split_text(texts)
+    docs = [Document(page_content=c) for c in chunks]
+    embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
+    vectorstore = FAISS.from_documents(docs, embeddings)
+    return vectorstore
+
+# retreval(similarity search)
+
+

@@ -5,3 +5,4 @@ matplotlib
 faiss-cpu
 sentence-transformers
 langchain_huggingface 
+pypdf
